@@ -1,0 +1,25 @@
+{
+  "name": "us-embassy-slots-checker",
+  "version": "1.0.0",
+  "description": "A utility to retreive free slots at the US embassy",
+  "main": "./index.ts",
+  "scripts": {
+    "start": "node -r @swc-node/register ./index.ts | pino-pretty"
+  },
+  "author": "Teimur Gasanov <teymurgg321@gmail.com> (https://teimurjan.dev/)",
+  "license": "ISC",
+  "dependencies": {
+    "2captcha": "^3.0.5",
+    "dotenv": "^16.0.2",
+    "lokijs": "^1.5.12",
+    "pino": "^8.5.0",
+    "pino-pretty": "^9.1.0",
+    "puppeteer": "^17.1.3",
+    "telegraf": "^4.9.2"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.5.1",
+    "@types/lokijs": "^1.5.7",
+    "typescript": "^4.8.3"
+  }
+}
