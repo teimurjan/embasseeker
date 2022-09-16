@@ -1,21 +1,39 @@
-import Loki from "lokijs";
-import { Slot, SlotRepo } from "../types";
+import { DB, Slot, SlotRepo } from "../types";
 
-const Slot = (db: Loki): SlotRepo => ({
-  getOne: () => {
-    const collection = db.getCollection<Slot>("slots");
-    return collection.data[0];
-  },
-  updateOrCreate: (newSlot: Slot) => {
-    const collection = db.getCollection<Slot>("slots");
-    const slot = collection.data[0];
+const slot = (db: DB): SlotRepo => {
+  const getOne = async () => {
+    const slots = await db<Slot[]>`
+      select date
+      from slots
+    `;
 
-    if (slot) {
-      return collection.update({ ...slot, ...newSlot });
-    } else {
-      return collection.insertOne(newSlot);
-    }
-  },
-});
+    return slots.length ? slots[0] : undefined;
+  };
 
-export default Slot;
+  return {
+    getOne,
+    updateOrCreate: async (newSlot: Slot) => {
+      const slot = await getOne();
+
+      if (slot) {
+        return (
+          await db<Slot[]>`
+            update slots
+            set date=${newSlot.date}
+            returning *
+          `
+        )[0];
+      }
+
+      return (
+        await db<Slot[]>`
+          insert into slots(date)
+          values(${newSlot.date})
+          returning *
+        `
+      )[0];
+    },
+  };
+};
+
+export default slot;

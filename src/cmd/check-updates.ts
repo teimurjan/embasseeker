@@ -15,7 +15,7 @@ const run = async (retryCount = 3): Promise<void> => {
       const userRepo = repos.user(db);
       const slotRepo = repos.slot(db);
 
-      const usersWithBarcode = userRepo.getWithBarcodes();
+      const usersWithBarcode = await userRepo.getWithBarcodes();
       if (!usersWithBarcode.length) {
         logger.info("There are no users with barcodes");
         process.exit(0);
@@ -27,24 +27,26 @@ const run = async (retryCount = 3): Promise<void> => {
 
       const bot = new Telegraf(process.env.BOT_TOKEN);
       const date = await findDate(randomBarcode);
-      const formattedDate = date ? formatDate(date) : undefined;
 
-      const slot = slotRepo.getOne();
+      const slot = await slotRepo.getOne();
 
-      if (formattedDate && (!slot || slot.date !== formattedDate)) {
-        slotRepo.updateOrCreate({
-          date: formattedDate,
+      if (date && (!slot || slot.date !== date)) {
+        await slotRepo.updateOrCreate({
+          date,
         });
-        db.save();
 
-        const messageText = `ℹ️ There is a new slot for interview available: ${formattedDate}.`;
+        const messageText = `ℹ️ The first available slot for an interview has been changed: <b>${formatDate(
+          date
+        )}</b>.`;
         await Promise.all(
           usersWithBarcode.map((user) =>
-            bot.telegram.sendMessage(user.chatId, messageText)
+            bot.telegram.sendMessage(user.chat_id, messageText, {
+              parse_mode: "HTML",
+            })
           )
         );
 
-        logger.info(`A new interview date found: ${formattedDate}`);
+        logger.info(`A new interview date found: ${date}`);
       } else {
         logger.info("No new interview date found");
       }
@@ -80,4 +82,4 @@ function formatDate(date: Date) {
   ].join(".");
 }
 
-export default run;
+run();

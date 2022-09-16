@@ -1,26 +1,30 @@
+import { Sql } from "postgres";
+
 export enum ChatState {
   Still = "still",
-  WaitingForBarcode = "waitingForBarcode",
+  WaitingForBarcode = "waiting_for_barcode",
 }
 
 export type User = {
-  chatId: number;
-  chatState?: ChatState;
+  chat_id: number;
+  chat_state?: ChatState;
   barcode?: string;
 };
 
 export type Slot = {
-  date: string;
+  date: Date;
 };
 
 export type UserRepo = {
-  findByChatId: (chatId: number) => User | null;
-  create: (user: User) => User | undefined;
-  update: (user: User) => User;
-  getWithBarcodes: () => User[];
+  findByChatId: (chatId: number) => Promise<User | undefined>;
+  create: (user: User) => Promise<User | undefined>;
+  update: (user: User) => Promise<User>;
+  getWithBarcodes: () => Promise<User[]>;
 };
 
 export type SlotRepo = {
-  getOne: () => Slot;
-  updateOrCreate: (updates: Pick<Slot, "date">) => Slot | undefined;
+  getOne: () => Promise<Slot | undefined>;
+  updateOrCreate: (newSlot: Slot) => Promise<Slot | undefined>;
 };
+
+export type DB = Sql<User | Slot>;

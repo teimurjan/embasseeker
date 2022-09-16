@@ -3,13 +3,18 @@ import { MessageHandler } from "./types";
 
 const barcode =
   (repo: UserRepo): MessageHandler =>
-  (ctx) => {
-    let user = repo.findByChatId(ctx.chat.id);
+  async (ctx) => {
+    const user = await repo.findByChatId(ctx.chat.id);
 
-    if (user === null) {
-      user = repo.create({
-        chatId: ctx.chat.id,
-        chatState: ChatState.WaitingForBarcode,
+    if (!user) {
+      await repo.create({
+        chat_id: ctx.chat.id,
+        chat_state: ChatState.WaitingForBarcode,
+      })!;
+    } else {
+      await repo.update({
+        ...user,
+        chat_state: ChatState.WaitingForBarcode,
       })!;
     }
 
