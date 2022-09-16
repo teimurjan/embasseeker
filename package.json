@@ -4,7 +4,8 @@
   "description": "A utility to retreive free slots at the US embassy",
   "main": "./index.ts",
   "scripts": {
-    "start": "node -r @swc-node/register ./index.ts | pino-pretty"
+    "bot": "node -r @swc-node/register ./src/cmd/run-bot.ts | pino-pretty",
+    "check-updates": "node -r @swc-node/register ./src/cmd/check-updates.ts | pino-pretty"
   },
   "author": "Teimur Gasanov <teymurgg321@gmail.com> (https://teimurjan.dev/)",
   "license": "ISC",

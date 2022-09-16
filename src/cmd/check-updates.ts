@@ -1,7 +1,10 @@
 import { Telegraf } from "telegraf";
 import pino from "pino";
+import { config } from "dotenv";
 import { database, repos } from "../bot";
-import findDate from "./find-date";
+import { findDate } from "../functions";
+
+config();
 
 const logger = pino();
 

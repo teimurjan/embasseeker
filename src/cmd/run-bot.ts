@@ -1,6 +1,9 @@
 import { Telegraf } from "telegraf";
 import pino from "pino";
+import { config } from "dotenv";
 import { database, handlers, repos } from "../bot";
+
+config();
 
 const logger = pino();
 
@@ -32,4 +35,4 @@ const run = async () => {
   }
 };
 
-export default run;
+run();

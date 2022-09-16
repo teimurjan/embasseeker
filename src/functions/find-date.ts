@@ -1,5 +1,6 @@
 import * as puppeteer from "puppeteer";
 import pino from "pino";
+import { config } from "dotenv";
 import {
   main,
   shared,
@@ -7,6 +8,8 @@ import {
   appointment,
   calendar,
 } from "../crawler";
+
+config();
 
 const logger = pino();
 
@@ -70,7 +73,7 @@ const findFirstDate = async (page: puppeteer.Page) => {
   logger.info("Looking for the first available date");
   const date = await calendar.actions.findFirstDate(page);
 
-  return date
+  return date;
 };
 
 export default run;
