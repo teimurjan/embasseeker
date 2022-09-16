@@ -15,7 +15,17 @@ const run = async () => {
     bot.command("barcode", handlers.barcode(userRepo));
     bot.on("text", handlers.text(userRepo));
 
-    bot.launch();
+    const config =
+      process.env.WEBHOOK_DOMAIN && process.env.PORT
+        ? {
+            webhook: {
+              domain: process.env.WEBHOOK_DOMAIN,
+              port: parseInt(process.env.PORT, 10),
+            },
+          }
+        : undefined;
+
+    bot.launch(config);
   } else {
     logger.error("BOT_TOKEN is missing");
     process.exit(1);
