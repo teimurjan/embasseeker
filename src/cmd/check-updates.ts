@@ -30,7 +30,7 @@ const run = async (retryCount = 3): Promise<void> => {
 
       const slot = await slotRepo.getOne();
 
-      if (date && (!slot || slot.date !== date)) {
+      if (date && (!slot || slot.date.getTime() !== date.getTime())) {
         await slotRepo.updateOrCreate({
           date,
         });
