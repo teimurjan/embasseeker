@@ -16,6 +16,7 @@ const run = async () => {
 
     bot.start(handlers.start());
     bot.command("barcode", handlers.barcode(userRepo));
+    bot.command("reset_barcode", handlers.resetBarcode(userRepo));
     bot.on("text", handlers.text(userRepo));
 
     const config =

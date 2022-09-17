@@ -8,7 +8,7 @@ export enum ChatState {
 export type User = {
   chat_id: number;
   chat_state?: ChatState;
-  barcode?: string;
+  barcode?: string | null;
 };
 
 export type Slot = {
