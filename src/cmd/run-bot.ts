@@ -13,10 +13,12 @@ const run = async () => {
     const bot = new Telegraf(process.env.BOT_TOKEN);
 
     const userRepo = repos.user(db);
+    const slotRepo = repos.slot(db);
 
     bot.start(handlers.start());
     bot.command("barcode", handlers.barcode(userRepo));
     bot.command("reset_barcode", handlers.resetBarcode(userRepo));
+    bot.command("get_slot", handlers.getSlot(slotRepo));
     bot.on("text", handlers.text(userRepo));
 
     const config =

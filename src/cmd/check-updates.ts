@@ -3,6 +3,7 @@ import pino from "pino";
 import { config } from "dotenv";
 import { database, repos } from "../bot";
 import { findDate } from "../functions";
+import { formatDate } from "../utils";
 
 config();
 
@@ -69,17 +70,5 @@ const run = async (retryCount = 3): Promise<void> => {
     process.exit(1);
   }
 };
-
-function padTo2Digits(num: number) {
-  return num.toString().padStart(2, "0");
-}
-
-function formatDate(date: Date) {
-  return [
-    padTo2Digits(date.getDate()),
-    padTo2Digits(date.getMonth() + 1),
-    date.getFullYear(),
-  ].join(".");
-}
 
 run();
