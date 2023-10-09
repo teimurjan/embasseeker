@@ -3,7 +3,6 @@ import pino from "pino";
 import { config } from "dotenv";
 import {
   main,
-  shared,
   preAppointment,
   appointment,
   calendar,
@@ -31,7 +30,6 @@ const run = async (barcode: string) => {
 const loadInitialURL = async (page: puppeteer.Page) => {
   logger.info(`Go to ${main.constants.URL}`);
   await page.goto(main.constants.URL);
-  await shared.actions.waitForPageToLoad(page);
 };
 
 const fillAndSubmitLocationForm = async (page: puppeteer.Page) => {
